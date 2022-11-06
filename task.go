@@ -33,10 +33,26 @@ func (b *buildSystem) addTask(t task) {
 }
 
 func (b *buildSystem) run(t taskName) ([]action, error) {
-	// validate and run
-	dependencyGraph := map[taskName][]taskName{}
-
-
-	return nil, nil
+	dependencyGraph := b.buildGraph()
+	
+	out := []action{}
+	for name, t := range dependencyGraph {
+		
+	}
+	return out, nil
 }
 
+func (b *buildSystem) buildGraph() map[taskName][]taskName {
+	out := map[taskName][]taskName{}
+	for name,t := range b.tasks {
+		tasks, ok := out[name]
+		if !ok {
+			out[name] = t.depedencies
+		} else {
+			// todo: dedup
+			tasks = append(tasks, t.depedencies...) 
+			out[name] = tasks
+		}
+	}
+	return out
+}

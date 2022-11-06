@@ -2,6 +2,7 @@
 
 example:
 
+<!-- todo - or maybe do it in yaml? -->
 ```
 HEADERS = program.h headers.h
 
