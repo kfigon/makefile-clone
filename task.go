@@ -29,8 +29,8 @@ func (b *buildSystem) addTask(t task) {
 	b.tasks = append(b.tasks, t)
 }
 
-func (b *buildSystem) run() error {
+func (b *buildSystem) run() ([]action, error) {
 	// validate and run
-	return nil
+	return nil, nil
 }
 
