@@ -36,9 +36,14 @@ func (b *buildSystem) run(t taskName) ([]action, error) {
 	dependencyGraph := b.buildGraph()
 	
 	out := []action{}
-	for name, t := range dependencyGraph {
+	seen := map[taskName]struct{}{}
+	
+	var foo func(taskName)
+	foo = func(currentTask taskName) {
 		
 	}
+	
+	foo(t)
 	return out, nil
 }
 
@@ -49,7 +54,6 @@ func (b *buildSystem) buildGraph() map[taskName][]taskName {
 		if !ok {
 			out[name] = t.depedencies
 		} else {
-			// todo: dedup
 			tasks = append(tasks, t.depedencies...) 
 			out[name] = tasks
 		}
