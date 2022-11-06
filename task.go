@@ -1,15 +1,16 @@
 package main
 
 type action string
+type taskName string
 
 type task struct{
-	name string
-	depedencies []task
+	name taskName
+	depedencies []taskName
 	actions []action
 }
 
-func newTask(name string, deps []task, actions []action) task{
-	return task{
+func newTask(name taskName, deps []taskName, actions []action) task {
+	return task {
 		name: name, 
 		depedencies: deps,
 		actions: actions,
@@ -18,19 +19,23 @@ func newTask(name string, deps []task, actions []action) task{
 
 
 type buildSystem struct {
-	tasks []task
+	tasks map[taskName]task
 }
 
 func newBuildSystem() *buildSystem {
-	return &buildSystem{}
+	return &buildSystem{
+		tasks: map[taskName]task{},
+	}
 }
 
 func (b *buildSystem) addTask(t task) {
-	b.tasks = append(b.tasks, t)
+	b.tasks[t.name] = t
 }
 
 func (b *buildSystem) run() ([]action, error) {
 	// validate and run
+	graph := map[taskName][]taskName{}
+
 	return nil, nil
 }
 
