@@ -18,6 +18,7 @@ func TestBuildSystem(t *testing.T) {
 
 	t.Run("more tasks", func(t *testing.T) {
 		b := newBuildSystem()
+		b.addTask(newTask("clean", nil, []action{"cleaning"}))
 		b.addTask(newTask("stepA", nil, []action{"print foo"}))
 		b.addTask(newTask("stepB", nil, []action{"print bar", "print bar again"}))
 		b.addTask(newTask("run", []taskName{"stepA", "stepB"}, []action{"execute main"}))
@@ -25,6 +26,18 @@ func TestBuildSystem(t *testing.T) {
 		cmds, err := b.run("run")
 		assert.NoError(t, err)
 		assert.Equal(t, []action{"print foo", "print bar", "print bar again", "execute main"}, cmds)
+	})
+
+	t.Run("more tasks but run only intermediate cmd", func(t *testing.T) {
+		b := newBuildSystem()
+		b.addTask(newTask("clean", nil, []action{"cleaning"}))
+		b.addTask(newTask("stepA", nil, []action{"print foo"}))
+		b.addTask(newTask("stepB", nil, []action{"print bar", "print bar again"}))
+		b.addTask(newTask("run", []taskName{"stepA", "stepB"}, []action{"execute main"}))
+
+		cmds, err := b.run("stepA")
+		assert.NoError(t, err)
+		assert.Equal(t, []action{"print foo"}, cmds)
 	})
 }
 
