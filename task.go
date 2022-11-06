@@ -32,9 +32,10 @@ func (b *buildSystem) addTask(t task) {
 	b.tasks[t.name] = t
 }
 
-func (b *buildSystem) run() ([]action, error) {
+func (b *buildSystem) run(t taskName) ([]action, error) {
 	// validate and run
-	graph := map[taskName][]taskName{}
+	dependencyGraph := map[taskName][]taskName{}
+
 
 	return nil, nil
 }

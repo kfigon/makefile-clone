@@ -11,7 +11,7 @@ func TestBuildSystem(t *testing.T) {
 		b := newBuildSystem()
 		b.addTask(newTask("step", nil, []action{"print foo"}))
 
-		cmds, err := b.run()
+		cmds, err := b.run("step")
 		assert.NoError(t, err)
 		assert.Equal(t, []action{"print foo"}, cmds)
 	})
