@@ -43,14 +43,20 @@ func TestBuildSystem(t *testing.T) {
 
 func TestInvalidCases(t *testing.T) {
 	t.Run("empty system", func(t *testing.T) {
-		t.Fatal("todo")
-	})
-
-	t.Run("dependency not provided", func(t *testing.T) {
-		t.Fatal("todo")
+		b := newBuildSystem()
+		cmds, err := b.run("foo")
+		assert.NoError(t, err)
+		assert.Equal(t, []action{}, cmds)
 	})
 
 	t.Run("circular dependency", func(t *testing.T) {
-		t.Fatal("todo")
+		b := newBuildSystem()
+		b.addTask(newTask("clean", nil, []action{"cleaning"}))
+		b.addTask(newTask("stepA", []taskName{"stepB"}, []action{"print foo"}))
+		b.addTask(newTask("stepB", []taskName{"stepA"}, []action{"print bar", "print bar again"}))
+		b.addTask(newTask("run", []taskName{"stepA"}, []action{"execute main"}))
+
+		_, err := b.run("run")
+		assert.Error(t, err)
 	})
 }

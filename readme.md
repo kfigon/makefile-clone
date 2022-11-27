@@ -24,3 +24,10 @@ clean:
     * target can have multiple steps
 * dependencies - what a target depends on
 * circular dependencies detection
+
+
+todo:
+- [x] graph processing
+- [x] cycle detection
+- [x] topology sort
+- [ ] parsing config
