@@ -10,6 +10,7 @@ program.o: program.c
 
 program: program.o
     gcc program.o -o program
+    
 clean:
     rm -f program.o
     rm -f program

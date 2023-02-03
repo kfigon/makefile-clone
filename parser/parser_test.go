@@ -15,6 +15,7 @@ program.o: program.c
 
 program: program.o
 	gcc program.o -o program
+
 clean:
 	rm -f program.o
 	rm -f program`
@@ -24,20 +25,27 @@ func TestLexer(t *testing.T) {
 		{identifier, "default"},
 		{colon, ":"},
 		{identifier, "program"},
+		{doubleNewline, "\n\n"},
 
 		{identifier, "program.o"},
 		{colon, ":"},
 		{identifier, "program.c"},
+		{newLine, "\n"},
 		{tabedCmd, "gcc -c program.c -o program.o"},
+		{doubleNewline, "\n\n"},
 
 		{identifier, "program"},
 		{colon, ":"},
 		{identifier, "program.o"},
+		{newLine, "\n"},
 		{tabedCmd, "gcc program.o -o program"},
+		{doubleNewline, "\n\n"},
 
 		{identifier, "clean"},
 		{colon, ":"},
+		{newLine, "\n"},
 		{tabedCmd, "rm -f program.o"},
+		{newLine, "\n"},
 		{tabedCmd, "rm -f program"},
 
 	}
