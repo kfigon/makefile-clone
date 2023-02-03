@@ -42,3 +42,7 @@ clean:
 	got := lex(input)
 	assert.Equal(t, expected, got)
 }
+
+func TestParse(t *testing.T) {
+	
+}

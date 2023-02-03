@@ -1,6 +1,9 @@
 package parser
 
-import "unicode"
+import (
+	"unicode"
+	. "makefile-clone/buildsystem"
+)
 
 type tokenType int
 
@@ -38,6 +41,7 @@ func lex(input string) []token {
 			word := readUntil(func(r rune) bool { return r != '\n'})
 			out = append(out, token{tabedCmd, word})
 		} else if unicode.IsSpace(c) {
+			// skip newlines or spaces
 		} else if c == ':'{
 			out = append(out, token{colon, ":"})
 		} else {
@@ -47,4 +51,8 @@ func lex(input string) []token {
 		i++
 	}
 	return out
+}
+
+func parse(toks []token) (*BuildSystem, error) {
+	return nil, nil
 }

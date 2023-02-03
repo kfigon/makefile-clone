@@ -1,4 +1,4 @@
-package main
+package buildsystem
 
 import (
 	"fmt"
@@ -15,38 +15,38 @@ func (s set) present(v string) bool {
 	return ok
 }
 
-type action string
-type taskName string
+type Action string
+type TaskName string
 
-type task struct {
-	name        taskName
-	depedencies []taskName
-	actions     []action
+type Task struct {
+	name        TaskName
+	depedencies []TaskName
+	actions     []Action
 }
 
-func newTask(name taskName, deps []taskName, actions []action) task {
-	return task{
+func NewTask(name TaskName, deps []TaskName, actions []Action) Task {
+	return Task{
 		name:        name,
 		depedencies: deps,
 		actions:     actions,
 	}
 }
 
-type buildSystem struct {
-	tasks map[taskName]task
+type BuildSystem struct {
+	tasks map[TaskName]Task
 }
 
-func newBuildSystem() *buildSystem {
-	return &buildSystem{
-		tasks: map[taskName]task{},
+func NewBuildSystem() *BuildSystem {
+	return &BuildSystem{
+		tasks: map[TaskName]Task{},
 	}
 }
 
-func (b *buildSystem) addTask(t task) {
+func (b *BuildSystem) AddTask(t Task) {
 	b.tasks[t.name] = t
 }
 
-func (b *buildSystem) run(t taskName) ([]action, error) {
+func (b *BuildSystem) Run(t TaskName) ([]Action, error) {
 	dependencyGraph := b.buildGraph()
 	if cycle := hasCycles(t, dependencyGraph); len(cycle) != 0 {
 		var vals []string
@@ -57,17 +57,17 @@ func (b *buildSystem) run(t taskName) ([]action, error) {
 	}
 
 	top := topology(t, dependencyGraph)
-	out := []action{}
-	for _,v := range top {
+	out := []Action{}
+	for _, v := range top {
 		task := b.tasks[v]
 		out = append(out, task.actions...)
 	}
 	return out, nil
 }
 
-type graph map[taskName][]taskName
+type graph map[TaskName][]TaskName
 
-func (b *buildSystem) buildGraph() map[taskName][]taskName {
+func (b *BuildSystem) buildGraph() map[TaskName][]TaskName {
 	out := graph{}
 	for name, t := range b.tasks {
 		tasks := out[name]
@@ -77,20 +77,20 @@ func (b *buildSystem) buildGraph() map[taskName][]taskName {
 	return out
 }
 
-func hasCycles(start taskName, g graph) []taskName {
+func hasCycles(start TaskName, g graph) []TaskName {
 	visited := set{}
-	pathTo := map[taskName]taskName{}
-	out := []taskName{}
+	pathTo := map[TaskName]TaskName{}
+	out := []TaskName{}
 	onStack := set{}
 
-	var dfs func(taskName)
-	dfs = func(t taskName) {
+	var dfs func(TaskName)
+	dfs = func(t TaskName) {
 		if visited.present(string(t)) {
 			return
 		}
 		onStack.add(string(t))
 		visited.add(string(t))
-		for _,children := range g[t] {
+		for _, children := range g[t] {
 			if len(out) != 0 {
 				return
 			}
@@ -114,11 +114,11 @@ func hasCycles(start taskName, g graph) []taskName {
 	return out
 }
 
-func topology(start taskName, g graph) []taskName {
+func topology(start TaskName, g graph) []TaskName {
 	visited := set{}
-	out := []taskName{}
-	var dfs func(t taskName)
-	dfs = func(t taskName) {
+	out := []TaskName{}
+	var dfs func(t TaskName)
+	dfs = func(t TaskName) {
 		if visited.present(string(t)) {
 			return
 		}

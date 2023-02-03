@@ -1,16 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	. "makefile-clone/buildsystem"
+)
 
 // https://xmonader.github.io/nimdays/day11_buildsystem.html
 func main() {
-	b := newBuildSystem()
-	b.addTask(newTask("clean", nil, []action{"cleaning"}))
-	b.addTask(newTask("stepA", nil, []action{"print foo"}))
-	b.addTask(newTask("stepB", nil, []action{"print bar", "print bar again"}))
-	b.addTask(newTask("run", []taskName{"stepA", "stepB"}, []action{"execute main"}))
+	b := NewBuildSystem()
+	b.AddTask(NewTask("clean", nil, []Action{"cleaning"}))
+	b.AddTask(NewTask("stepA", nil, []Action{"print foo"}))
+	b.AddTask(NewTask("stepB", nil, []Action{"print bar", "print bar again"}))
+	b.AddTask(NewTask("run", []TaskName{"stepA", "stepB"}, []Action{"execute main"}))
 
-	cmds, err := b.run("run")
+	cmds, err := b.Run("run")
 	if err != nil {
 		fmt.Println("got error:", err)
 		return
