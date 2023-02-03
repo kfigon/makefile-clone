@@ -10,7 +10,7 @@ program.o: program.c
 
 program: program.o
     gcc program.o -o program
-    
+
 clean:
     rm -f program.o
     rm -f program
@@ -26,4 +26,5 @@ todo:
 - [x] graph processing
 - [x] cycle detection
 - [x] topology sort
-- [ ] parsing config
+- [x] parsing config
+- [ ] more robust lexer and parser, it's fragile currently
