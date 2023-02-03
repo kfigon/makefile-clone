@@ -1,12 +1,14 @@
 package parser
 
 import (
+	. "makefile-clone/buildsystem"
 	"testing"
+
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestLexer(t *testing.T) {
-	input := `default: program
+const input = `default: program
 
 program.o: program.c
 	gcc -c program.c -o program.o
@@ -17,6 +19,7 @@ clean:
 	rm -f program.o
 	rm -f program`
 
+func TestLexer(t *testing.T) {
 	expected := []token{
 		{identifier, "default"},
 		{colon, ":"},
@@ -44,5 +47,14 @@ clean:
 }
 
 func TestParse(t *testing.T) {
-	
+	b, err := ParseInput(input)
+
+	exp := NewBuildSystem()
+	exp.AddTask(NewTask("default", []TaskName{"program"}, nil))
+	exp.AddTask(NewTask("program.o", []TaskName{"program.c"}, []Action{"gcc -c program.c -o program.o"}))
+	exp.AddTask(NewTask("program", []TaskName{"program.o"}, []Action{"gcc program.o -o program"}))
+	exp.AddTask(NewTask("clean", nil, []Action{"rm -f program.o", "rm -f program"}))
+
+	require.NoError(t, err)
+	assert.Equal(t, *exp, *b)
 }

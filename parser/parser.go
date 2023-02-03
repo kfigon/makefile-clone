@@ -53,6 +53,23 @@ func lex(input string) []token {
 	return out
 }
 
-func parse(toks []token) (*BuildSystem, error) {
-	return nil, nil
+func ParseInput(input string) (*BuildSystem, error) {
+	tokens := lex(input)
+	p := &parser{tokens: tokens}
+	return p.parse()
+}
+
+type parser struct{
+	tokens []token
+	idx int
+}
+
+func (p *parser) parse() (*BuildSystem, error) {
+	b := NewBuildSystem()
+	// b.AddTask(NewTask("clean", nil, []Action{"cleaning"}))
+	// b.AddTask(NewTask("stepA", nil, []Action{"print foo"}))
+	// b.AddTask(NewTask("stepB", nil, []Action{"print bar", "print bar again"}))
+	// b.AddTask(NewTask("run", []TaskName{"stepA", "stepB"}, []Action{"execute main"}))
+
+	return b, nil
 }
