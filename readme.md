@@ -2,24 +2,19 @@
 
 example:
 
-<!-- todo - or maybe do it in yaml? -->
 ```
-HEADERS = program.h headers.h
-
 default: program
 
-program.o: program.c $(HEADERS)
+program.o: program.c
     gcc -c program.c -o program.o
 
 program: program.o
     gcc program.o -o program
-
 clean:
-    -rm -f program.o
-    -rm -f program
+    rm -f program.o
+    rm -f program
 ```
 
-* variables `HEADERS=...`
 * targets `the_target:` - precedes `:`
     * target can have multiple steps
 * dependencies - what a target depends on
